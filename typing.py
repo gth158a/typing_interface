@@ -319,7 +319,7 @@ T = Text(root, wrap='word', height=4, width=100)
 T.pack() #.place(x=2,y=2)
 
 # example = "And why do I bother with such an effort? Because I believe resilience is one of the most"
-example = "I believe resilience is"
+example = "And why do I bother with such an effort? I believe resilience is"
 example1 = "important skills one can develop, mainly for two reasons."
 # example2 = "The first reason is that it makes life just so much simple and enjoyable. Its great to know that there are only few catastrophes that could really affect your overall happiness. When happiness trully comes from within, most things that happen to you, no matter how bad, can’t really affect it. This gives you an enormous confidence, and lets you experiment with all sort of beneficial new ideas, which in turn result in more happiness and confidence."
 example2 = "The first reason is that it makes life just so much simple and enjoyable."
@@ -364,6 +364,8 @@ def load_new_chunk():
         print("Correct Counter ",  c_correct)
         print("Incorrect Counter ",  c_incorrect)
         print("Error pairs: ", c_error_pairs)
+        content_text.insert(1.0, c_error_pairs)
+        content_text.insert(END, "\nAccuracy: {}".format(correct/(correct + incorrect)))
         # it would be cool if I could count the words as well
         #       given chracter location look for spaces before and after
         # done = True
