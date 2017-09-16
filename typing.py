@@ -352,6 +352,14 @@ c_incorrect = Counter()
 c_error_pairs = Counter()
 # maybe tuples (incorrect, meant) and count on that for confusion matrix
 
+# get the word in which error was made
+def get_word(sentence, c_num):
+    after = [i for i, ltr in enumerate(sentence[c_num:]) if ltr == " "][0]
+    before = [i for i, ltr in enumerate(sentence[:c_num]) if ltr == " "][-1]
+
+    return sentence[before+1:after+c_num]
+
+
 def load_new_chunk():
     global c_correct
     global c_incorrect
@@ -451,9 +459,14 @@ def callback(a, b, c):
             load_new_chunk()
 
     else:
-        c_incorrect.update(test[i-1][start])
-        c_error_pairs.update([(test[i-1][start], current[length_current-1])])
         incorrect += 1
+        c_incorrect.update(test[i-1][start])
+        print(test[i-1])
+        print(test[i-1][start])
+        mistaken_word = get_word(test[i-1], start)
+        print(mistaken_word)
+        c_error_pairs.update([(mistaken_word, test[i-1][start], current[length_current-1])])
+
         print("NOT GOOD")
         T.tag_configure("cursor", foreground="red", underline=True)
 
