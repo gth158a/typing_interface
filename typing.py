@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.filedialog
 import tkinter.messagebox
 from collections import Counter
+import time
 
 PROGRAM_NAME = "Jdawg's Typing mastery MF"
 file_name = None
@@ -34,6 +35,20 @@ R2 = ["6", "7", "y", "h", "n", "u", "j", "m", "^", "&"] # right index
 R3 = ["8", "i", "k", ",", "*"] # right middle
 R4 = ["9", "o", "l", ".", "("] # right ring
 # R5 = ["0", "p", ";", "/". "?", ")", "-", "_", "+", "=", "{", "[", "}", "]", "|", "\\" ] # right pinky
+
+# timer (seconds)
+start_timer = time.time()
+
+# number of character typed
+chars = 0
+
+# characters per second
+# cpm cps x s/m
+# wpm - 5 chars = 1 word
+
+cursor_color = "#%02x%02x%02x" % (226, 57, 199)
+foreground_color = "#%02x%02x%02x" % (171, 178, 191)
+background_color = "#%02x%02x%02x" % (0, 2, 42)
 
 
 def update_line_numbers(event=None):
@@ -315,7 +330,7 @@ for i, icon in enumerate(icons):
     tool_bar.pack(side='left')
 
 # to diplay text
-T = Text(root, wrap='word', height=4, width=100)
+T = Text(root, wrap='word', height=4, width=100, background=background_color, foreground=foreground_color)
 T.pack() #.place(x=2,y=2)
 
 # example = "And why do I bother with such an effort? Because I believe resilience is one of the most"
@@ -358,7 +373,7 @@ def load_new_chunk():
         pos = T.index(1.0)
         T.tag_add("cursor", pos)
         # T.tag_configure("cursor", foreground="red", underline=True)
-        T.tag_configure("cursor", background="yellow", underline=True)
+        T.tag_configure("cursor", background=cursor_color, underline=True)
     else:
         print("You won!!")
         print("Correct Counter ",  c_correct)
@@ -397,9 +412,17 @@ def callback(a, b, c):
     global pos
     current = a_var.get()
     length_current = len(current)
+    global chars
     global example_length
     print(test[i-1][start])
     print(current[length_current-1])
+
+    # to calculate timer in seconds
+    global start_timer
+    now = time.time()
+    timer_seconds = now - start_timer
+    chars += 1
+
 
     if test[i-1][start] == current[length_current-1]:
         c_correct.update(test[i-1][start])
@@ -410,11 +433,17 @@ def callback(a, b, c):
         T.tag_remove("cursor", pos)
         pos = pos + '+1c'
         T.tag_add("cursor", pos)
-        T.tag_configure("cursor", background="yellow", underline=True)
+        T.tag_configure("cursor", background=cursor_color, underline=True)
         T.tag_configure("cursor", foreground="black", underline=True)
 
+        # print("Timer: {}".format(timer_seconds))
+        # print("Characters: {}".format(chars))
 
         print("correct: {}\nincorrect: {}\nAccuracy: {}".format(correct, incorrect, correct/(correct + incorrect)))
+        cpm = chars/timer_seconds*60
+        wpm = cpm/5
+        print("cpm: ", cpm)
+        print("wpm: ", wpm)
 
         if start >= example_length:
             print("start ", start)
