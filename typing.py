@@ -337,7 +337,8 @@ T.pack() #.place(x=2,y=2)
 example = "And why do I bother with such an effort? I believe resilience is"
 example1 = "important skills one can develop, mainly for two reasons."
 # example2 = "The first reason is that it makes life just so much simple and enjoyable. Its great to know that there are only few catastrophes that could really affect your overall happiness. When happiness trully comes from within, most things that happen to you, no matter how bad, can’t really affect it. This gives you an enormous confidence, and lets you experiment with all sort of beneficial new ideas, which in turn result in more happiness and confidence."
-example2 = "The first reason is that it makes life just so much simple and enjoyable."
+# example2 = "The first reason is that it makes life just so much simple and enjoyable."
+example2 = 'When the word "bodega" began to trend all over Twitter this week, I wondered whether something bad had happened in one those beloved, big-city neighbo'
 T.config(font=("Courier", 18))
 
 global correct
@@ -358,6 +359,19 @@ def get_word(sentence, c_num):
     before = [i for i, ltr in enumerate(sentence[:c_num]) if ltr == " "][-1]
 
     return sentence[before+1:after+c_num]
+
+def split_article(article, num_chars):
+    secciones = []
+    prev = 0
+
+    article_range = range(num_chars, len(article), num_chars)
+
+    for r in article_range:
+        secciones.append(article[prev:r])
+        prev = r
+        if r == article_range[-1]:
+            secciones.append(article[prev:len(article)])
+    return secciones
 
 
 def load_new_chunk():
@@ -476,7 +490,8 @@ a["textvariable"] = a_var
 a.pack()
 a_var.trace_variable("w", callback)
 
-test = [example, example1, example2]
+test = [example, example1, example2] # to be replaced with split_article()
+
 global test_length
 test_length = len(test)
 # global i
