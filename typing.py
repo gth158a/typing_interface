@@ -4,6 +4,7 @@ import tkinter.filedialog
 import tkinter.messagebox
 from collections import Counter
 import time
+import pickle
 
 PROGRAM_NAME = "Jdawg's Typing mastery MF"
 file_name = None
@@ -490,7 +491,11 @@ a["textvariable"] = a_var
 a.pack()
 a_var.trace_variable("w", callback)
 
-test = [example, example1, example2] # to be replaced with split_article()
+with open("notebook/economist.pickle", 'rb') as article:
+    o = pickle.load(article)
+
+test = split_article(o, 150)
+# test = [example, example1, example2] # to be replaced with split_article()
 
 global test_length
 test_length = len(test)
